@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { Config } from "@backstage/config";
 import {
   AnalyticsApi,
