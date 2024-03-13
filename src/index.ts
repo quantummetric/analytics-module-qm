@@ -1,1 +1,1 @@
-export { QuantumMetric } from './api';
+export * from './api';

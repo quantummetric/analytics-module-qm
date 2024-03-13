@@ -26,8 +26,11 @@ yarn build
 3. From your Backstage directory run the following where `$INSTALL_PATH` is the path of this repo:
 
 ```bash
-yarn add @qm/plugin-analytics-module-qm@file:$INSTALL_PATH
+yarn add @qm/plugin-analytics-module-qm@link:$INSTALL_PATH
 ```
+
+Note: If making changes to `config.d.ts` against a Backstage instance started with `backstage-cli package start`,
+changes will not take effect till the next `backstage-cli package start`
 
 ## Contributing
 

@@ -20,12 +20,18 @@ type eventsConfig = {
   id: number;
 };
 
+type attributesConfig = {
+  name: string;
+  value: string | boolean | number;
+};
+
 export type QMConfig = {
   enabled: boolean;
   test: boolean;
   debug: boolean;
   src: string;
   async: boolean;
+  globalAttributes: attributesConfig[];
   events: eventsConfig[];
 };
 
@@ -48,7 +54,8 @@ export class QuantumMetric implements AnalyticsApi, NewAnalyticsApi {
   private test: boolean = false;
   private debug: boolean = false;
   private quantumInstalled: boolean = false;
-  private eventsMapping: eventsConfig[] = [{} as eventsConfig];
+  private eventsMapping: Record<string, number> = {};
+  private globalAttributes: Record<string, string | boolean | number> = {};
   private eventTransforms: Record<string, Transformer> = defaultTransforms;
 
   /*
@@ -97,7 +104,17 @@ export class QuantumMetric implements AnalyticsApi, NewAnalyticsApi {
     }
 
     if (events) {
-      this.eventsMapping = events;
+      this.eventsMapping = events.reduce(
+        (prev, curr) => {
+          prev[curr.name] = curr.id;
+          return prev;
+        },
+        {} as Record<string, number>,
+      );
+      if (this.debug)
+        console.debug(
+          `Event mapping configured: ${JSON.stringify(this.eventsMapping)}`,
+        );
     } else if (!events && debug) {
       console.debug(
         'Events mapping not passed in, OOTB events will not be sent to Quantum Metric',
@@ -106,6 +123,22 @@ export class QuantumMetric implements AnalyticsApi, NewAnalyticsApi {
 
     if (options.eventTransforms) {
       this.eventTransforms = options.eventTransforms;
+    }
+
+    if (options.qmConfig.globalAttributes) {
+      this.globalAttributes = options.qmConfig.globalAttributes.reduce(
+        (prev, curr) => {
+          prev[curr.name] = curr.value;
+          return prev;
+        },
+        {} as Record<string, string | boolean | number>,
+      );
+      if (this.debug)
+        console.debug(
+          `Global attributes configured: ${JSON.stringify(
+            this.globalAttributes,
+          )}`,
+        );
     }
   }
 
@@ -128,7 +161,7 @@ export class QuantumMetric implements AnalyticsApi, NewAnalyticsApi {
   }
 
   /*
-   * validateConfig creates the guardrails for providing feedback to integrators on invalid configurations.
+   * validateConfig provides feedback to integrators on invalid configurations
    */
   static validateConfig(config: QMConfig) {
     if (config.debug) console.debug('Starting configuration validation');
@@ -145,6 +178,16 @@ export class QuantumMetric implements AnalyticsApi, NewAnalyticsApi {
       if (filteredEvents.length !== config.events.length) {
         console.warn(
           'Event mapping passed in that did not specify a name or ID',
+        );
+      }
+    }
+    if (config.globalAttributes) {
+      const filteredAttributes = config.globalAttributes.filter(
+        (attribute) => attribute.name && attribute.value,
+      );
+      if (filteredAttributes.length !== config.globalAttributes.length) {
+        console.warn(
+          'Global attribute passed in config that did not specify a name or value',
         );
       }
     }
@@ -169,6 +212,11 @@ export class QuantumMetric implements AnalyticsApi, NewAnalyticsApi {
     const async = config.getOptionalBoolean('app.analytics.qm.async') ?? false;
     const test = config.getOptionalBoolean('app.analytics.qm.test') ?? false;
     const debug = config.getOptionalBoolean('app.analytics.qm.debug') ?? false;
+
+    // Get all optional complex types. Defaults to empty object if not provided.
+    const globalAttributes = (config.getOptional(
+      'app.analytics.qm.attributes',
+    ) as attributesConfig[]) ?? [{} as attributesConfig];
     const events = (config.getOptional(
       'app.analytics.qm.events.mappings',
     ) as eventsConfig[]) ?? [{} as eventsConfig];
@@ -179,6 +227,7 @@ export class QuantumMetric implements AnalyticsApi, NewAnalyticsApi {
       debug, // Turns on console.debug messages
       src, // CDN location of Quantum Metric API
       async, // Wether or not to block on loading Quantum Metric API onto the page
+      globalAttributes, // Attributes to be included on every event sent to Quantum Metric
       events, // Mapping of OOTB backstage events to Quantum Metric event IDs
     };
 
@@ -200,14 +249,6 @@ export class QuantumMetric implements AnalyticsApi, NewAnalyticsApi {
       return;
     }
 
-    const eventMapping = this.eventsMapping.reduce(
-      (prev, curr) => {
-        prev[curr.name] = curr.id;
-        return prev;
-      },
-      {} as Record<string, number>,
-    );
-
     if (this.debug) console.debug(`Event received: ${JSON.stringify(event)}`);
 
     const transformFunc =
@@ -215,17 +256,27 @@ export class QuantumMetric implements AnalyticsApi, NewAnalyticsApi {
 
     const { eventId, eventValue, conversion, attributes } = transformFunc(
       event,
-      eventMapping,
+      this.eventsMapping,
+    );
+    const attributesWithGlobals = Object.assign(
+      {},
+      attributes,
+      this.globalAttributes, // As the second source object, global properties will overwrite on key collision
     );
 
     if (this.debug)
       console.debug(
         `Transform ran and received: eventId: ${eventId}, eventValue: ${eventValue}, conversion: ${conversion}, attributes: ${JSON.stringify(
-          attributes,
+          attributesWithGlobals,
         )}`,
       );
 
-    this.capture.sendEvent(eventId, conversion, eventValue, attributes);
+    this.capture.sendEvent(
+      eventId,
+      conversion,
+      eventValue,
+      attributesWithGlobals,
+    );
 
     if (this.debug) console.debug(`Event id ${eventId} sent to Quantum Metric`);
   }

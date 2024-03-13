@@ -24,7 +24,8 @@
     "prepack": "backstage-cli package prepack",
     "prettier:check": "prettier --check .",
     "postpack": "backstage-cli package postpack",
-    "release": "release-it"
+    "release": "release-it",
+    "dev": "nodemon -e js,ts --exitcrash --ignore dist --exec \"yarn run build && cp config.d.ts dist/\""
   },
   "dependencies": {
     "@backstage/config": "^1.1.1",
@@ -57,5 +58,6 @@
     "dist",
     "config.d.ts"
   ],
-  "configSchema": "config.d.ts"
+  "configSchema": "config.d.ts",
+  "module": "./dist/index.esm.js"
 }
