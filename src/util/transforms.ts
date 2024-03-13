@@ -1,5 +1,5 @@
-import { AnalyticsEvent } from "@backstage/core-plugin-api";
-import { AnalyticsEvent as NewAnalyticsEvent } from "@backstage/frontend-plugin-api";
+import { AnalyticsEvent } from '@backstage/core-plugin-api';
+import { AnalyticsEvent as NewAnalyticsEvent } from '@backstage/frontend-plugin-api';
 
 /*
  * Transformers take in Backstage analytics events and transform the data to fit what is expected by the Quantum Metric
@@ -8,9 +8,9 @@ import { AnalyticsEvent as NewAnalyticsEvent } from "@backstage/frontend-plugin-
 export type Transformer = (
   event: AnalyticsEvent | NewAnalyticsEvent,
   eventMapping: Record<
-    AnalyticsEvent["action"] | NewAnalyticsEvent["action"],
-    QuantumEvent["eventId"]
-  >
+    AnalyticsEvent['action'] | NewAnalyticsEvent['action'],
+    QuantumEvent['eventId']
+  >,
 ) => QuantumEvent;
 
 type QuantumEvent = {

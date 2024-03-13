@@ -4,11 +4,12 @@ import {
   AnalyticsApi,
   AnalyticsEvent,
   IdentityApi,
-} from "@backstage/core-plugin-api";
+
+} from '@backstage/core-plugin-api';
 import {
   AnalyticsApi as NewAnalyticsApi,
   AnalyticsEvent as NewAnalyticsEvent,
-} from "@backstage/frontend-plugin-api";
+} from '@backstage/frontend-plugin-api';
 import {
   Transformer,
   defaultEventTransform,
@@ -35,7 +36,7 @@ export type QuantumMetricAPI = {
     eventId: number | string,
     conversion?: number | boolean,
     eventValue?: number | string,
-    attributes?: Record<string, string | boolean | number | undefined>
+    attributes?: Record<string, string | boolean | number | undefined>,
   ) => void;
 };
 
@@ -64,21 +65,21 @@ export class QuantumMetric implements AnalyticsApi, NewAnalyticsApi {
     const { enabled, test, debug, src, async, events } = options.qmConfig;
 
     if (!enabled) {
-      if (debug) console.debug("Quantum Metric Analytics plugin disabled.");
+      if (debug) console.debug('Quantum Metric Analytics plugin disabled.');
       return {} as QuantumMetric;
     }
 
     this.test = test;
     this.debug = debug;
 
-    if (window.hasOwnProperty("QuantumMetricAPI")) {
+    if (window.hasOwnProperty('QuantumMetricAPI')) {
       this.quantumInstalled = true;
     }
 
     if (src) {
       if (this.debug) console.debug(`Fetching Quantum Metric API from ${src}`);
       this.installQuantum(async, src);
-      if (this.debug) console.debug("Quantum Metric has been fetched");
+      if (this.debug) console.debug('Quantum Metric has been fetched');
     }
 
     this.capture =
@@ -87,10 +88,10 @@ export class QuantumMetric implements AnalyticsApi, NewAnalyticsApi {
 
     if (options.identityApi) {
       if (this.debug)
-        console.debug("Identity API provided; Identifying user by email");
+        console.debug('Identity API provided; Identifying user by email');
 
       // TODO wait for quantum to load
-      console.debug("Quantum API loaded");
+      console.debug('Quantum API loaded');
       options.identityApi.getProfileInfo().then((profile) => {
         if (profile?.email) this.capture?.identifyUser(profile.email);
       });
@@ -100,7 +101,7 @@ export class QuantumMetric implements AnalyticsApi, NewAnalyticsApi {
       this.eventsMapping = events;
     } else if (!events && debug) {
       console.debug(
-        "Events mapping not passed in, OOTB events will not be sent to Quantum Metric"
+        'Events mapping not passed in, OOTB events will not be sent to Quantum Metric',
       );
     }
 
@@ -115,13 +116,13 @@ export class QuantumMetric implements AnalyticsApi, NewAnalyticsApi {
     }
 
     this.quantumInstalled = true;
-    const qtm = document.createElement("script");
-    qtm.type = "text/javascript";
+    const qtm = document.createElement('script');
+    qtm.type = 'text/javascript';
     qtm.async = async;
     qtm.src = src;
 
     // Install before any other script
-    const d = document.getElementsByTagName("script")[0];
+    const d = document.getElementsByTagName('script')[0];
     if (d.parentNode) {
       d.parentNode.insertBefore(qtm, d);
     }
@@ -131,20 +132,20 @@ export class QuantumMetric implements AnalyticsApi, NewAnalyticsApi {
    * validateConfig creates the guardrails for providing feedback to integrators on invalid configurations.
    */
   static validateConfig(config: QMConfig) {
-    if (config.debug) console.debug("Starting configuration validation");
+    if (config.debug) console.debug('Starting configuration validation');
 
-    if (!config.src.includes("https://cdn.quantummetric.com/"))
+    if (!config.src.includes('https://cdn.quantummetric.com/'))
       console.warn(
-        "Unexpected source provided; Expected source to start with https://cdn.quantummetric.com/"
+        'Unexpected source provided; Expected source to start with https://cdn.quantummetric.com/',
       );
 
     if (config.events) {
       const filteredEvents = config.events.filter(
-        (event) => event.name && event.id
+        (event) => event.name && event.id,
       );
       if (filteredEvents.length !== config.events.length) {
         console.warn(
-          "Event mapping passed in that did not specify a name or ID"
+          'Event mapping passed in that did not specify a name or ID',
         );
       }
     }
@@ -162,15 +163,15 @@ export class QuantumMetric implements AnalyticsApi, NewAnalyticsApi {
     } = {}
   ) {
     // Get all necessary configuration.
-    const enabled = config.getBoolean("app.analytics.qm.enabled");
+    const enabled = config.getBoolean('app.analytics.qm.enabled');
 
     // Get all optional configuration. Defaults are set if values are not provided.
-    const src = config.getOptionalString("app.analytics.qm.src") ?? "";
-    const async = config.getOptionalBoolean("app.analytics.qm.async") ?? false;
-    const test = config.getOptionalBoolean("app.analytics.qm.test") ?? false;
-    const debug = config.getOptionalBoolean("app.analytics.qm.debug") ?? false;
+    const src = config.getOptionalString('app.analytics.qm.src') ?? '';
+    const async = config.getOptionalBoolean('app.analytics.qm.async') ?? false;
+    const test = config.getOptionalBoolean('app.analytics.qm.test') ?? false;
+    const debug = config.getOptionalBoolean('app.analytics.qm.debug') ?? false;
     const events = (config.getOptional(
-      "app.analytics.qm.events.mappings"
+      'app.analytics.qm.events.mappings',
     ) as eventsConfig[]) ?? [{} as eventsConfig];
 
     const qmConfig: QMConfig = {
@@ -200,10 +201,13 @@ export class QuantumMetric implements AnalyticsApi, NewAnalyticsApi {
       return;
     }
 
-    const eventMapping = this.eventsMapping.reduce((prev, curr) => {
-      prev[curr.name] = curr.id;
-      return prev;
-    }, {} as Record<string, number>);
+    const eventMapping = this.eventsMapping.reduce(
+      (prev, curr) => {
+        prev[curr.name] = curr.id;
+        return prev;
+      },
+      {} as Record<string, number>,
+    );
 
     if (this.debug) console.debug(`Event received: ${JSON.stringify(event)}`);
 
@@ -212,12 +216,12 @@ export class QuantumMetric implements AnalyticsApi, NewAnalyticsApi {
 
     const { eventId, eventValue, conversion, attributes } = transformFunc(
       event,
-      eventMapping
+      eventMapping,
     );
 
     if (this.debug)
       console.debug(
-        `Transform ran and received: eventId: ${eventId}, eventValue: ${eventId}, conversion: ${conversion}, attributes: ${JSON.stringify(
+        `Transform ran and received: eventId: ${eventId}, eventValue: ${eventValue}, conversion: ${conversion}, attributes: ${JSON.stringify(
           attributes
         )}`
       );
