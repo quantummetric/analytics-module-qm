@@ -410,7 +410,4 @@ describe("Quantum Metric", () => {
     });
   });
 
-  describe("identity", () => {
-    it("properly sets identity", () => {});
-  });
 });
