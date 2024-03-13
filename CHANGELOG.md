@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/quantummetric/analytics-module-qm/compare/v1.0.0...v1.0.1) (2024-03-13)
+
+
+### Bug Fixes
+
+* **ci:** adding lint step to ci ([6bbc60d](https://github.com/quantummetric/analytics-module-qm/commit/6bbc60d766ce8767835de088cfa89c79ae931cb6))
+
 # 1.0.0 (2024-03-13)
 
 
