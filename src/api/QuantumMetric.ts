@@ -1,26 +1,26 @@
 /* eslint-disable no-console */
-import { Config } from '@backstage/config';
+import { Config } from "@backstage/config";
 import {
-    AnalyticsApi,
-    AnalyticsEvent,
-    IdentityApi,
-} from '@backstage/core-plugin-api';
+  AnalyticsApi,
+  AnalyticsEvent,
+  IdentityApi,
+} from "@backstage/core-plugin-api";
 import {
-    AnalyticsApi as NewAnalyticsApi,
-    AnalyticsEvent as NewAnalyticsEvent,
-} from '@backstage/frontend-plugin-api';
+  AnalyticsApi as NewAnalyticsApi,
+  AnalyticsEvent as NewAnalyticsEvent,
+} from "@backstage/frontend-plugin-api";
 import {
-    Transformer,
-    defaultEventTransform,
-    defaultTransforms,
-} from '../util/transforms';
+  Transformer,
+  defaultEventTransform,
+  defaultTransforms,
+} from "../util/transforms";
 
 type eventsConfig = {
   name: string;
   id: number;
 };
 
-type QMConfig = {
+export type QMConfig = {
   enabled: boolean;
   test: boolean;
   debug: boolean;
@@ -29,7 +29,7 @@ type QMConfig = {
   events: eventsConfig[];
 };
 
-type QuantumMetricAPI = {
+export type QuantumMetricAPI = {
   identifyUser: (email: string) => void;
   sendEvent: (
     eventId: number | string,
@@ -59,6 +59,7 @@ export class QuantumMetric implements AnalyticsApi, NewAnalyticsApi {
     qmConfig: QMConfig;
     identityApi?: IdentityApi;
     eventTransforms?: Record<string, Transformer>;
+    capture?: QuantumMetricAPI;
   }) {
     const { enabled, test, debug, src, async, events } = options.qmConfig;
 
@@ -80,7 +81,8 @@ export class QuantumMetric implements AnalyticsApi, NewAnalyticsApi {
       if (this.debug) console.debug("Quantum Metric has been fetched");
     }
 
-    this.capture = (window as any).QuantumMetricAPI as QuantumMetricAPI;
+    this.capture =
+      options.capture || ((window as any).QuantumMetricAPI as QuantumMetricAPI);
     if (this.debug) console.debug("Set class capture member variable");
 
     if (options.identityApi) {
@@ -156,6 +158,7 @@ export class QuantumMetric implements AnalyticsApi, NewAnalyticsApi {
     options: {
       identityApi?: IdentityApi;
       eventTransforms?: Record<string, Transformer>;
+      capture?: QuantumMetricAPI;
     } = {}
   ) {
     // Get all necessary configuration.
@@ -214,7 +217,9 @@ export class QuantumMetric implements AnalyticsApi, NewAnalyticsApi {
 
     if (this.debug)
       console.debug(
-        `Transform ran and received: eventId: ${eventId}, eventValue: ${eventId}, conversion: ${conversion}, attributes: ${attributes}`
+        `Transform ran and received: eventId: ${eventId}, eventValue: ${eventId}, conversion: ${conversion}, attributes: ${JSON.stringify(
+          attributes
+        )}`
       );
 
     this.capture.sendEvent(eventId, conversion, eventValue, attributes);
