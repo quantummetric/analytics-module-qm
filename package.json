@@ -23,7 +23,8 @@
     "clean": "backstage-cli package clean",
     "prepack": "backstage-cli package prepack",
     "prettier:check": "prettier --check .",
-    "postpack": "backstage-cli package postpack"
+    "postpack": "backstage-cli package postpack",
+    "release": "release-it"
   },
   "dependencies": {
     "@backstage/config": "^1.1.1",
