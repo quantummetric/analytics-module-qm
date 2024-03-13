@@ -34,11 +34,11 @@ const sendEventTransform: Transformer = (event) => {
 
 // OOTB "Navigation" actions
 const navigationEventTransform: Transformer = (event, eventMapping) => {
-  const { action, subject, attributes } = event;
+  const { action, subject, attributes, context } = event;
   const quantumEvent = {
     eventId: eventMapping[action],
     eventValue: subject,
-    attributes: attributes,
+    attributes: { ...attributes, ...context },
     conversion: false,
   };
 
@@ -47,11 +47,11 @@ const navigationEventTransform: Transformer = (event, eventMapping) => {
 
 // OOTB "Search" actions
 const searchEventTransform: Transformer = (event, eventMapping) => {
-  const { action, subject, value, attributes } = event;
+  const { action, subject, value, attributes, context } = event;
   const quantumEvent = {
     eventId: eventMapping[action],
     eventValue: subject,
-    attributes: { ...attributes, 'results-found': value },
+    attributes: { ...attributes, 'results-found': value, ...context },
     conversion: false,
   };
 
@@ -60,11 +60,24 @@ const searchEventTransform: Transformer = (event, eventMapping) => {
 
 // OOTB "Discover" actions
 const discoverEventTransform: Transformer = (event, eventMapping) => {
-  const { action, subject, value, attributes } = event;
+  const { action, subject, value, attributes, context } = event;
   const quantumEvent = {
     eventId: eventMapping[action],
     eventValue: subject,
-    attributes: { ...attributes, 'search-position': value },
+    attributes: { ...attributes, 'search-position': value, ...context },
+    conversion: false,
+  };
+
+  return quantumEvent;
+};
+
+// OOTB "Click" actions
+const clickEventTransform: Transformer = (event, eventMapping) => {
+  const { action, subject, attributes, context } = event;
+  const quantumEvent = {
+    eventId: eventMapping[action],
+    eventValue: subject,
+    attributes: { ...attributes, ...context },
     conversion: false,
   };
 
@@ -72,11 +85,11 @@ const discoverEventTransform: Transformer = (event, eventMapping) => {
 };
 
 export const defaultEventTransform: Transformer = (event, eventMapping) => {
-  const { action, subject, value, attributes } = event;
+  const { action, subject, value, attributes, context } = event;
   const quantumEvent = {
     eventId: eventMapping[action],
     eventValue: value ?? subject,
-    attributes: attributes,
+    attributes: { ...attributes, ...context },
     conversion: false,
   };
 
@@ -88,6 +101,6 @@ export const defaultTransforms: Record<string, Transformer> = {
   search: searchEventTransform,
   discover: discoverEventTransform,
   'not-found': defaultEventTransform,
-  click: defaultEventTransform,
+  click: clickEventTransform,
   sendEvent: sendEventTransform,
 };
