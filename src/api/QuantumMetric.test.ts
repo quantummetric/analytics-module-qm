@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { ConfigReader } from "@backstage/config";
-import { IdentityApi } from "@backstage/core-plugin-api";
-import { QuantumMetric, QuantumMetricAPI } from "./QuantumMetric";
+import { ConfigReader } from '@backstage/config';
+import { IdentityApi } from '@backstage/core-plugin-api';
+import { QuantumMetric, QuantumMetricAPI } from './QuantumMetric';
 
 let mockQuantumMetricAPI: QuantumMetricAPI;
 let mockIdentityApi: IdentityApi;
@@ -23,34 +23,34 @@ let originalGetElementsByTagName: any;
 let insertBeforeMock: any;
 
 const defaultAttributes: any = {
-  environment: "development",
-  value: "0.0.1",
+  environment: 'development',
+  value: '0.0.1',
 };
 
 const TEST_EVENTS: any = {
   NAVIGATE: {
-    NAME: "navigate",
-    ID: "1",
+    NAME: 'navigate',
+    ID: '1',
   },
   CLICK: {
-    NAME: "click",
-    ID: "2",
+    NAME: 'click',
+    ID: '2',
   },
   CREATE: {
-    NAME: "create",
-    ID: "3",
+    NAME: 'create',
+    ID: '3',
   },
   SEARCH: {
-    NAME: "search",
-    ID: "4",
+    NAME: 'search',
+    ID: '4',
   },
   DISCOVER: {
-    NAME: "discover",
-    ID: "5",
+    NAME: 'discover',
+    ID: '5',
   },
   NOTFOUND: {
-    NAME: "not-found",
-    ID: "6",
+    NAME: 'not-found',
+    ID: '6',
   },
 };
 
@@ -61,7 +61,7 @@ const defaultConfig = {
         enabled: true,
         debug: true,
         test: false,
-        src: "https://cdn.quantummetric.com/qscripts/blahblah-qmplatform.js",
+        src: 'https://cdn.quantummetric.com/qscripts/blahblah-qmplatform.js',
         async: true,
         events: {
           mappings: Object.keys(TEST_EVENTS).map((k) => ({
@@ -86,17 +86,17 @@ beforeEach(() => {
   // Create a mock implementation for IdentityApi
   mockIdentityApi = {
     getProfileInfo: jest.fn().mockResolvedValue({
-      email: "test@example.com",
-      displayName: "Test User",
-      id: "user-123",
+      email: 'test@example.com',
+      displayName: 'Test User',
+      id: 'user-123',
     }),
     getBackstageIdentity: jest.fn().mockResolvedValue({
-      type: "user",
-      userEntityRef: "test@example.com",
+      type: 'user',
+      userEntityRef: 'test@example.com',
       ownershipEntityRefs: [],
     }),
     getCredentials: jest.fn().mockResolvedValue({
-      token: "abc123",
+      token: 'abc123',
     }),
     signOut: jest.fn().mockResolvedValue(true),
   };
@@ -109,7 +109,7 @@ beforeEach(() => {
 
   // Mock document.getElementsByTagName to return a fake script node array
   document.getElementsByTagName = jest.fn().mockImplementation((tagName) => {
-    if (tagName === "script") {
+    if (tagName === 'script') {
       // Return an array with a mock script node
       return [
         {
@@ -128,25 +128,25 @@ afterEach(() => {
   jest.clearAllMocks();
 });
 
-describe("Quantum Metric", () => {
+describe('Quantum Metric', () => {
   const context = {
-    extension: "App",
-    pluginId: "some-plugin",
-    routeRef: "unknown",
+    extension: 'App',
+    pluginId: 'some-plugin',
+    routeRef: 'unknown',
     releaseNum: 1337,
   };
-  const measurementId = "G-000000-0";
+  const measurementId = 'G-000000-0';
   const basicValidConfig = new ConfigReader(defaultConfig);
 
-  describe("fromConfig", () => {
-    it("throws when missing src", () => {
+  describe('fromConfig', () => {
+    it('throws when missing src', () => {
       const config = new ConfigReader({ app: { analytics: { ga4: {} } } });
       expect(() => QuantumMetric.fromConfig(config)).toThrow(
-        /Missing required config value/
+        /Missing required config value/,
       );
     });
 
-    it("returns implementation", () => {
+    it('returns implementation', () => {
       const api = QuantumMetric.fromConfig(basicValidConfig, {
         identityApi: mockIdentityApi,
         capture: mockQuantumMetricAPI,
@@ -156,23 +156,23 @@ describe("Quantum Metric", () => {
 
       api.captureEvent({
         action: TEST_EVENTS.NAVIGATE.NAME,
-        subject: "/",
+        subject: '/',
         context,
         attributes: defaultAttributes,
       });
       expect(mockQuantumMetricAPI.sendEvent).toHaveBeenCalledWith(
         TEST_EVENTS.NAVIGATE.ID,
         false,
-        "/",
+        '/',
         {
           ...defaultAttributes,
           ...context,
-        }
+        },
       );
     });
   });
 
-  describe("test mode", () => {
+  describe('test mode', () => {
     const testConfig = new ConfigReader({
       app: {
         analytics: {
@@ -180,7 +180,7 @@ describe("Quantum Metric", () => {
             enabled: true,
             debug: true,
             test: true,
-            src: "https://cdn.quantummetric.com/qscripts/blahblah-qmplatform.js",
+            src: 'https://cdn.quantummetric.com/qscripts/blahblah-qmplatform.js',
             async: true,
             events: {
               mappings: Object.keys(TEST_EVENTS).map((k) => ({
@@ -196,7 +196,7 @@ describe("Quantum Metric", () => {
         },
       },
     });
-    it("does not send QM events", () => {
+    it('does not send QM events', () => {
       const api = QuantumMetric.fromConfig(testConfig, {
         identityApi: mockIdentityApi,
         capture: mockQuantumMetricAPI,
@@ -204,7 +204,7 @@ describe("Quantum Metric", () => {
 
       api.captureEvent({
         action: TEST_EVENTS.NAVIGATE.NAME,
-        subject: "/",
+        subject: '/',
         context,
         attributes: defaultAttributes,
       });
@@ -212,15 +212,15 @@ describe("Quantum Metric", () => {
     });
   });
 
-  describe("navigate", () => {
-    it("uses proper default mappings", () => {
+  describe('navigate', () => {
+    it('uses proper default mappings', () => {
       const api = QuantumMetric.fromConfig(basicValidConfig, {
         identityApi: mockIdentityApi,
         capture: mockQuantumMetricAPI,
       });
       api.captureEvent({
         action: TEST_EVENTS.NAVIGATE.NAME,
-        subject: "/",
+        subject: '/',
         context,
         attributes: defaultAttributes,
       });
@@ -228,31 +228,31 @@ describe("Quantum Metric", () => {
       expect(mockQuantumMetricAPI.sendEvent).toHaveBeenCalledWith(
         TEST_EVENTS.NAVIGATE.ID,
         false,
-        "/",
+        '/',
         {
           ...defaultAttributes,
           ...context,
-        }
+        },
       );
     });
   });
 
-  describe("search", () => {
-    it("uses proper mappings", () => {
+  describe('search', () => {
+    it('uses proper mappings', () => {
       const api = QuantumMetric.fromConfig(basicValidConfig, {
         identityApi: mockIdentityApi,
         capture: mockQuantumMetricAPI,
       });
 
       const searchContext = {
-        routeRef: "unknown",
-        pluginId: "search",
-        extension: "SearchBar",
-        searchTypes: "",
+        routeRef: 'unknown',
+        pluginId: 'search',
+        extension: 'SearchBar',
+        searchTypes: '',
       };
       api.captureEvent({
         action: TEST_EVENTS.SEARCH.NAME,
-        subject: "test",
+        subject: 'test',
         value: 15,
         context: searchContext,
         attributes: defaultAttributes,
@@ -261,32 +261,32 @@ describe("Quantum Metric", () => {
       expect(mockQuantumMetricAPI.sendEvent).toHaveBeenCalledWith(
         TEST_EVENTS.SEARCH.ID,
         false,
-        "test",
+        'test',
         {
           ...defaultAttributes,
-          "results-found": 15,
+          'results-found': 15,
           ...searchContext,
-        }
+        },
       );
     });
   });
 
-  describe("click", () => {
-    it("uses proper mappings", () => {
+  describe('click', () => {
+    it('uses proper mappings', () => {
       const api = QuantumMetric.fromConfig(basicValidConfig, {
         identityApi: mockIdentityApi,
         capture: mockQuantumMetricAPI,
       });
 
       const clickContext = {
-        routeRef: "catalog",
-        pluginId: "catalog",
-        extension: "CatalogIndexPage",
+        routeRef: 'catalog',
+        pluginId: 'catalog',
+        extension: 'CatalogIndexPage',
       };
 
       api.captureEvent({
         action: TEST_EVENTS.CLICK.NAME,
-        subject: "server",
+        subject: 'server',
         context: clickContext,
         attributes: {
           ...defaultAttributes,
@@ -296,32 +296,32 @@ describe("Quantum Metric", () => {
       expect(mockQuantumMetricAPI.sendEvent).toHaveBeenCalledWith(
         TEST_EVENTS.CLICK.ID,
         false,
-        "server",
+        'server',
         {
           ...defaultAttributes,
           ...clickContext,
-        }
+        },
       );
     });
   });
 
-  describe("create", () => {
-    it("uses proper mappings", () => {
+  describe('create', () => {
+    it('uses proper mappings', () => {
       const api = QuantumMetric.fromConfig(basicValidConfig, {
         identityApi: mockIdentityApi,
         capture: mockQuantumMetricAPI,
       });
 
       const createContext = {
-        routeRef: "scaffolder",
-        pluginId: "scaffolder",
-        extension: "ScaffolderPage",
-        entityRef: "template:default/documentation-template",
+        routeRef: 'scaffolder',
+        pluginId: 'scaffolder',
+        extension: 'ScaffolderPage',
+        entityRef: 'template:default/documentation-template',
       };
 
       api.captureEvent({
         action: TEST_EVENTS.CREATE.NAME,
-        subject: "test",
+        subject: 'test',
         context: createContext,
         attributes: {
           ...defaultAttributes,
@@ -331,32 +331,32 @@ describe("Quantum Metric", () => {
       expect(mockQuantumMetricAPI.sendEvent).toHaveBeenCalledWith(
         TEST_EVENTS.CREATE.ID,
         false,
-        "test",
+        'test',
         {
           ...defaultAttributes,
           ...createContext,
-        }
+        },
       );
     });
   });
 
-  describe("discover", () => {
-    it("uses proper mappings", () => {
+  describe('discover', () => {
+    it('uses proper mappings', () => {
       const api = QuantumMetric.fromConfig(basicValidConfig, {
         identityApi: mockIdentityApi,
         capture: mockQuantumMetricAPI,
       });
 
       const discoverContext = {
-        routeRef: "unknown",
-        pluginId: "search",
-        extension: "SearchResult",
-        searchTypes: "",
+        routeRef: 'unknown',
+        pluginId: 'search',
+        extension: 'SearchResult',
+        searchTypes: '',
       };
 
       api.captureEvent({
         action: TEST_EVENTS.DISCOVER.NAME,
-        subject: "test",
+        subject: 'test',
         context: discoverContext,
         attributes: {
           ...defaultAttributes,
@@ -366,32 +366,32 @@ describe("Quantum Metric", () => {
       expect(mockQuantumMetricAPI.sendEvent).toHaveBeenCalledWith(
         TEST_EVENTS.DISCOVER.ID,
         false,
-        "test",
+        'test',
         {
           ...defaultAttributes,
           ...discoverContext,
-        }
+        },
       );
     });
   });
 
-  describe("not found", () => {
-    it("uses proper mappings", () => {
+  describe('not found', () => {
+    it('uses proper mappings', () => {
       const api = QuantumMetric.fromConfig(basicValidConfig, {
         identityApi: mockIdentityApi,
         capture: mockQuantumMetricAPI,
       });
 
       const notFoundContext = {
-        routeRef: "unknown",
-        pluginId: "search",
-        extension: "SearchResult",
-        searchTypes: "",
+        routeRef: 'unknown',
+        pluginId: 'search',
+        extension: 'SearchResult',
+        searchTypes: '',
       };
 
       api.captureEvent({
         action: TEST_EVENTS.NOTFOUND.NAME,
-        subject: "test",
+        subject: 'test',
         context: notFoundContext,
         attributes: {
           ...defaultAttributes,
@@ -401,16 +401,16 @@ describe("Quantum Metric", () => {
       expect(mockQuantumMetricAPI.sendEvent).toHaveBeenCalledWith(
         TEST_EVENTS.NOTFOUND.ID,
         false,
-        "test",
+        'test',
         {
           ...defaultAttributes,
           ...notFoundContext,
-        }
+        },
       );
     });
   });
 
-  describe("identity", () => {
-    it("properly sets identity", () => {});
+  describe('identity', () => {
+    it('properly sets identity', () => {});
   });
 });

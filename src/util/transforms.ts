@@ -51,7 +51,7 @@ const searchEventTransform: Transformer = (event, eventMapping) => {
   const quantumEvent = {
     eventId: eventMapping[action],
     eventValue: subject,
-    attributes: { ...attributes, "results-found": value, ...context },
+    attributes: { ...attributes, 'results-found': value, ...context },
     conversion: false,
   };
 
@@ -64,7 +64,7 @@ const discoverEventTransform: Transformer = (event, eventMapping) => {
   const quantumEvent = {
     eventId: eventMapping[action],
     eventValue: subject,
-    attributes: { ...attributes, "search-position": value, ...context },
+    attributes: { ...attributes, 'search-position': value, ...context },
     conversion: false,
   };
 
@@ -100,7 +100,7 @@ export const defaultTransforms: Record<string, Transformer> = {
   navigate: navigationEventTransform,
   search: searchEventTransform,
   discover: discoverEventTransform,
-  "not-found": defaultEventTransform,
+  'not-found': defaultEventTransform,
   click: clickEventTransform,
   sendEvent: sendEventTransform,
 };
