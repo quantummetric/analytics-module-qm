@@ -19,7 +19,6 @@ import { QuantumMetric, QuantumMetricAPI } from './QuantumMetric';
 
 let mockQuantumMetricAPI: QuantumMetricAPI;
 let mockIdentityApi: IdentityApi;
-let originalGetElementsByTagName: any;
 let insertBeforeMock: any;
 
 const defaultAttributes: any = {
@@ -100,9 +99,6 @@ beforeEach(() => {
     }),
     signOut: jest.fn().mockResolvedValue(true),
   };
-
-  // Save the original document.getElementsByTagName
-  originalGetElementsByTagName = document.getElementsByTagName;
 
   // Create a mock for insertBefore method
   insertBeforeMock = jest.fn();
