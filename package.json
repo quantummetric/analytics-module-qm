@@ -18,6 +18,7 @@
     "start": "backstage-cli package start",
     "build": "tsc && backstage-cli package build",
     "lint": "backstage-cli package lint",
+    "lint:ci": "prettier . --check",
     "test": "backstage-cli package test",
     "clean": "backstage-cli package clean",
     "prepack": "backstage-cli package prepack",
