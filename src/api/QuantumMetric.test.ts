@@ -131,7 +131,6 @@ describe('Quantum Metric', () => {
     routeRef: 'unknown',
     releaseNum: 1337,
   };
-  const measurementId = 'G-000000-0';
   const basicValidConfig = new ConfigReader(defaultConfig);
 
   describe('fromConfig', () => {
