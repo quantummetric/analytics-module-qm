@@ -1,16 +1,16 @@
-import { AnalyticsEvent } from "@backstage/core-plugin-api";
-import { AnalyticsEvent as NewAnalyticsEvent } from "@backstage/frontend-plugin-api";
+import { AnalyticsEvent } from '@backstage/core-plugin-api';
+import { AnalyticsEvent as NewAnalyticsEvent } from '@backstage/frontend-plugin-api';
 
 /*
  * Transformers take in Backstage analytics events and transform the data to fit what is expected by the Quantum Metric
  * API.
- */ 
+ */
 export type Transformer = (
   event: AnalyticsEvent | NewAnalyticsEvent,
   eventMapping: Record<
-    AnalyticsEvent["action"] | NewAnalyticsEvent["action"],
-    QuantumEvent["eventId"]
-  >
+    AnalyticsEvent['action'] | NewAnalyticsEvent['action'],
+    QuantumEvent['eventId']
+  >,
 ) => QuantumEvent;
 
 type QuantumEvent = {
@@ -51,7 +51,7 @@ const searchEventTransform: Transformer = (event, eventMapping) => {
   const quantumEvent = {
     eventId: eventMapping[action],
     eventValue: subject,
-    attributes: { ...attributes, "results-found": value },
+    attributes: { ...attributes, 'results-found': value },
     conversion: false,
   };
 
@@ -64,7 +64,7 @@ const discoverEventTransform: Transformer = (event, eventMapping) => {
   const quantumEvent = {
     eventId: eventMapping[action],
     eventValue: subject,
-    attributes: { ...attributes, "search-position": value },
+    attributes: { ...attributes, 'search-position': value },
     conversion: false,
   };
 
@@ -87,7 +87,7 @@ export const defaultTransforms: Record<string, Transformer> = {
   navigate: navigationEventTransform,
   search: searchEventTransform,
   discover: discoverEventTransform,
-  "not-found": defaultEventTransform,
+  'not-found': defaultEventTransform,
   click: defaultEventTransform,
   sendEvent: sendEventTransform,
 };
