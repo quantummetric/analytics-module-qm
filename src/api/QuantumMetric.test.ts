@@ -238,7 +238,6 @@ describe('Quantum Metric', () => {
         identityApi: mockIdentityApi,
         capture: mockQuantumMetricAPI,
       });
-
       const searchContext = {
         routeRef: 'unknown',
         pluginId: 'search',
