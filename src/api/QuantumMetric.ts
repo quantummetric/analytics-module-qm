@@ -92,7 +92,7 @@ export class QuantumMetric implements AnalyticsApi, NewAnalyticsApi {
       this.capture =
         options.capture ||
         ((window as any).QuantumMetricAPI as QuantumMetricAPI);
-        this.setIdentity(options.identityApi);
+      this.setIdentity(options.identityApi);
     });
 
     this.setEventsMapping(events);
