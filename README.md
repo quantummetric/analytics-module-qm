@@ -72,9 +72,9 @@ Semantic versioning works by interpreting your semantic commit as described in t
 
 When a major, minor, or patch update is made, the corresponding number is increased.
 
-- Major version changes are related to incompatible API changes.
-- Minor version changes are related to adding new functionality in a backward-compatible manner.
-- Patch version changes are related to bug fixes which are also backward compatible.
+- Major version changes when incompatible API changes are made.
+- Minor version changes when new functionality is added backward-compatible manner.
+- Patch version changes when backward-compatible bug fixes are made.
 
 The table below describes the relationship between the semantic commit message and the semantic version sequence:
 
