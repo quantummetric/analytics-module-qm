@@ -91,8 +91,8 @@ Where the event mappings IDs are the Quantum Metric event IDs you wish to send.
 
 ### Event Transformers
 
-The plugin comes with default Event Transformers for each predefined [Backstage Key
-Event](https://backstage.io/docs/plugins/analytics/#key-events). However, you can customize or extend these
+The plugin comes with default Event Transformers for each predefined [Backstage key
+event](https://backstage.io/docs/plugins/analytics/#key-events) as described in [Default Transformers](#default-transformers). However, you can customize or extend these
 transformers. To override a default transformer or add transformers for new actions, modify the Analytics API
 configuration as follows:
 
@@ -114,6 +114,22 @@ configuration as follows:
 In the above example, the default transformer for the discover key event is overridden. The value sent to Quantum Metric
 is changed to `event.attributes.to` instead of the provided `event.subject`, and the `event.subject` is added as an
 attribute.
+
+#### Default Transformers
+
+There is a transformer for every [Backstage key
+event](https://backstage.io/docs/plugins/analytics/#key-events), and a default transformer when an action is not found
+in the `eventTransforms` record. The definitions can be found in [src/api/util/transforms.ts](./src/api/util/transforms.ts).
+
+
+| Backstage Analytics Action | Quantum Metric Event ID                    | Quantum Metric Event Value                                   | Quantum Metric Event Attributes                                                            | Quantum Metric Event Conversion |
+| -------------------------- | ------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------------------------------------ | ------------------------------- |
+| `sendEvent`                | Set to Backstage event subject             | Set to Backstage event value                                 | Event attributes                                                                           | Set to `false`                  |
+| `navigate`                 | Mapped from configuration `event.mappings` | Set to Backstage event subject                               | Combined attributes from context and event attributes                                      | Set to `false`                  |
+| `search`                   | Mapped from configuration `event.mappings` | Set to Backstage event subject                               | Combined attributes from context, event attributes, and `results-found` from event value   | Set to `false`                  |
+| `discover`                 | Mapped from configuration `event.mappings` | Set to Backstage event subject                               | Combined attributes from context, event attributes, and `search-position` from event value | Set to `false`                  |
+| `click`                    | Mapped from configuration `event.mappings` | Set to Backstage event subject                               | Combined attributes from context and event attributes                                      | Set to `false`                  |
+| `defaultEventTransform`    | Mapped from configuration `event.mappings` | Set to Backstage event value and if not present then subject | Combined attributes from context and event  attributes                                     | Set to `false`                  |
 
 ### Identity
 
@@ -176,6 +192,102 @@ and also has the global attributes configured, the event details will look like 
 
 Note: In the case of attribute name collisions between global attributes and event-specific attributes, the global
 attributes will take precedence and be included in the event details.
+
+### Capturing Events
+
+With the Quantum Metric plugin fully installed and configured, Backstage key events will be captured without extra
+effort.
+
+#### Instrumenting events
+
+To send events that are defined in the configuration's event mappings or event transformers, you can use the
+useAnalytics hook provided by `@backstage/core-plugin-api`.
+
+Here's an example of capturing a basic event:
+
+```JS
+import { useAnalytics } from '@backstage/core-plugin-api';
+
+const analytics = useAnalytics();
+
+analytics.captureEvent('catalog-updated', catalogEntityName);
+```
+
+If you want to add more information sent to Quantum Metric, you can include additional attributes:
+
+```JS
+analytics.captureEvent('catalog-updated', catalogEntityName {
+  value: numOfEntitiesUpdated,
+  attributes: {
+    entityOwner,
+    entityType,
+    userTeam,
+  },
+});
+```
+
+These additional attributes will show up under the events details in Quantum Metric.
+
+The specific configuration for the `catalog-updated` event can be defined either in the event mappings or with an event
+transformer.
+
+Example event mappings configuration:
+
+```YAML
+app:
+analytics:
+  qm:
+    events:
+      mappings:
+        - name: catalog-updated
+          id: $QUANTUM_METRIC_CATALOG_UPDATED_EVENT_ID
+```
+
+Alternatively, the default event transformer can be extended to capture more attributes for `catalog-updated`:
+
+```JS
+  createApiFactory({
+    api: analyticsApiRef,
+    deps: { configApi: configApiRef },
+    factory: ({ configApi }) =>
+      QuantumMetric.fromConfig(configApi, {
+        eventTransforms: {
+          'catalog-updated': (event, mapping) => {
+            return { 
+                eventId: mapping[event.action],
+                eventValue: event.subject, 
+                attributes: { ...event.attributes, ...event.context, numberOfAffectedEntities: event.value } 
+            };
+          },
+        },
+      }),
+  })
+```
+
+#### Context
+
+Additional information can also be added to Quantum Metric event details with the context React component.
+
+```JSX
+import { AnalyticsContext, useAnalytics } from '@backstage/core-plugin-api';
+
+const GreetingComponent = ({ name }) => {
+  const analytics = useAnalytics();
+  const handleClick = () => analytics.captureEvent('greeted', name);
+  return <button onClick={handleClick}>Say Hello to {name}</button>;
+};
+
+const GreetingComponentWrapper = () => {
+  return (
+    <AnalyticsContext attributes={{ admin: true }}>
+      <GreetingComponent name={'Alice'} />
+    </AnalyticsContext>
+  );
+};
+```
+
+When the `GreetingComponent` button is clicked, it will send a `greeted` event to Quantum Metric with the value of
+`Alice`, and the event details will include information about `Alice` being an admin.
 
 ## Contributing
 
@@ -288,8 +400,8 @@ When a major, minor, or patch update is made, the corresponding number is increa
 
 The table below describes the relationship between the semantic commit message and the semantic version sequence:
 
-| Commit Message                                    | Inferred Type      | Example Sequence Update |
-|---------------------------------------------------|--------------------|-------------------------|
-| `feat(auth): implement JWT authentication`        | Major              | Yes                     |
-| `fix(server): resolve memory leak issue`          | Minor              | Yes                     |
-| `chore(readme): update installation instructions` | Patch              | No                      |
+| Commit Message                                    | Inferred Type | Example Sequence Update |
+| ------------------------------------------------- | ------------- | ----------------------- |
+| `feat(auth): implement JWT authentication`        | Major         | Yes                     |
+| `fix(server): resolve memory leak issue`          | Minor         | Yes                     |
+| `chore(readme): update installation instructions` | Patch         | No                      |
