@@ -26,6 +26,11 @@ const defaultAttributes: any = {
   value: '0.0.1',
 };
 
+const mappedDefaultAttributes = Object.keys(defaultAttributes).map((k) => ({
+  name: k,
+  value: defaultAttributes[k],
+}));
+
 const TEST_EVENTS: any = {
   NAVIGATE: {
     NAME: 'navigate',
@@ -67,15 +72,13 @@ const defaultConfig = {
             name: TEST_EVENTS[k].NAME,
             id: TEST_EVENTS[k].ID,
           })),
-          attributes: Object.keys(defaultAttributes).map((k) => ({
-            name: k,
-            value: defaultAttributes[k],
-          })),
+          attributes: mappedDefaultAttributes,
         },
       },
     },
   },
 };
+
 
 beforeEach(() => {
   mockQuantumMetricAPI = {

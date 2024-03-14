@@ -55,7 +55,7 @@ The table below lists the available configuration options for the Quantum Metric
 | test            | boolean                               | No       | `false` | When enabled, events are logged to console instead of sent to Quantum Metric.                                    |
 | async           | boolean                               | No       | `false` | Sets the async attribute of the resulting HTML `<script>` element.                                               |
 | events.mappings | list of {name: string, id: integer}   | Yes      | `{}`    | Maps Backstage `AnalyticsEvent` actions to Quantum Metric Event ID's as a list of objects with `name` and `id`.  |
-| attributes      | list of {name: string, value: string} | Yes      | `{}`    | Included on every event sent to Quantum Metric under Event Details as a list of objects with `name` and `value`. |
+| events.attributes      | list of {name: string, value: string} | Yes      | `{}`    | Included on every event sent to Quantum Metric under Event Details as a list of objects with `name` and `value`. |
 
 ### Example Configuration
 
@@ -80,11 +80,11 @@ analytics:
           id: $QUANTUM_SEARCH_EVENT_ID
         - name: discover
           id: $QUANTUM_DISCOVER_EVENT_ID
-    attributes:
-      - name: environment
-        value: development
-      - name: version
-        value: 0.0.1
+      attributes:
+        - name: environment
+          value: development
+        - name: version
+          value: 0.0.1
 ```
 
 Where the event mappings IDs are the Quantum Metric event IDs you wish to send.
@@ -143,11 +143,12 @@ To configure global attributes, use the following format in your configuration f
 app:
   analytics:
     qm:
-      attributes:
-        - name: environment
-          value: development
-        - name: version
-          value: 0.0.1
+      events:
+        attributes:
+          - name: environment
+            value: development
+          - name: version
+            value: 0.0.1
 ```
 
 With the above configuration, the event details in Quantum Metric will include the following attributes:

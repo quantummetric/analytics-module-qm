@@ -85,14 +85,14 @@ export class QuantumMetric implements AnalyticsApi, NewAnalyticsApi {
     if (options.capture) {
       this.capture = options.capture;
       this.quantumInstalled = true;
+      this.setIdentity(options.identityApi);
     }
 
     this.installQuantum(async, src).then(() => {
       this.capture =
         options.capture ||
         ((window as any).QuantumMetricAPI as QuantumMetricAPI);
-
-      this.setIdentity(options.identityApi);
+        this.setIdentity(options.identityApi);
     });
 
     this.setEventsMapping(events);
@@ -108,11 +108,14 @@ export class QuantumMetric implements AnalyticsApi, NewAnalyticsApi {
 
   private setIdentity(identityApi?: IdentityApi) {
     if (identityApi) {
-      if (this.debug)
+      if (this.debug) {
         console.debug('Identity API provided; Identifying user by email');
+      }
 
       identityApi.getProfileInfo().then((profile) => {
-        if (profile?.email) this.capture?.identifyUser(profile.email);
+        if (profile?.email) {
+          this.capture?.identifyUser(profile.email);
+        }
       });
     }
   }
@@ -157,9 +160,10 @@ export class QuantumMetric implements AnalyticsApi, NewAnalyticsApi {
 
   private async installQuantum(async: boolean, src: string) {
     if (this.quantumInstalled) {
-      if (this.debug)
+      if (this.debug) {
         console.debug(`Quantum Metric API already on page; Skipping install`);
-      return;
+        return;
+      }
     }
 
     if (this.debug) console.debug(`Fetching Quantum Metric API from ${src}`);
@@ -238,7 +242,7 @@ export class QuantumMetric implements AnalyticsApi, NewAnalyticsApi {
 
     // Get all optional complex types. Defaults to empty object if not provided.
     const globalAttributes = (config.getOptional(
-      'app.analytics.qm.attributes',
+      'app.analytics.qm.events.attributes',
     ) as attributesConfig[]) ?? [{} as attributesConfig];
     const events = (config.getOptional(
       'app.analytics.qm.events.mappings',
