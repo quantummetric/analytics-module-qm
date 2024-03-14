@@ -1,6 +1,8 @@
+
+![Quantum Metric Logo](./images/logo.png)
 # Analytics Module: Quantum Metric
 
-Welcome to the Quantum Metric Analytics Provider for Backstage! This plugin aims to provide a quick and robust means to
+Welcome to the Quantum Metric Analytics Plugin for Backstage! This plugin aims to provide a quick and robust means to
 integrate Quantum Metric analytics with your Backstage instance.
 
 ## Installation
