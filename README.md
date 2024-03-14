@@ -47,15 +47,15 @@ example are detailed below.
 
 The table below lists the available configuration options for the Quantum Metric Analytics plugin:
 
-| Field Name      | Type                                  | Required | Default | Description                                                                                                      |
-| --------------- | ------------------------------------- | -------- | ------- | ---------------------------------------------------------------------------------------------------------------- |
-| enabled         | boolean                               | Yes      |         | Disables plugin.                                                                                                 |
-| src             | string                                | Yes      |         | CDN location of Quantum Metric API. The value is `qtm.src` on your subscriptions Install page.                   |
-| debug           | boolean                               | No       | `false` | Turns on console.debug messages.                                                                                 |
-| test            | boolean                               | No       | `false` | When enabled, events are logged to console instead of sent to Quantum Metric.                                    |
-| async           | boolean                               | No       | `false` | Sets the async attribute of the resulting HTML `<script>` element.                                               |
-| events.mappings | list of {name: string, id: integer}   | Yes      | `{}`    | Maps Backstage `AnalyticsEvent` actions to Quantum Metric Event ID's as a list of objects with `name` and `id`.  |
-| events.attributes      | list of {name: string, value: string} | Yes      | `{}`    | Included on every event sent to Quantum Metric under Event Details as a list of objects with `name` and `value`. |
+| Field Name        | Type                                  | Required | Default | Description                                                                                                      |
+| ----------------- | ------------------------------------- | -------- | ------- | ---------------------------------------------------------------------------------------------------------------- |
+| enabled           | boolean                               | Yes      |         | Disables plugin.                                                                                                 |
+| src               | string                                | Yes      |         | CDN location of Quantum Metric API. The value is `qtm.src` on your subscriptions Install page.                   |
+| debug             | boolean                               | No       | `false` | Turns on console.debug messages.                                                                                 |
+| test              | boolean                               | No       | `false` | When enabled, events are logged to console instead of sent to Quantum Metric.                                    |
+| async             | boolean                               | No       | `false` | Sets the async attribute of the resulting HTML `<script>` element.                                               |
+| events.mappings   | list of {name: string, id: integer}   | Yes      | `{}`    | Maps Backstage `AnalyticsEvent` actions to Quantum Metric Event ID's as a list of objects with `name` and `id`.  |
+| events.attributes | list of {name: string, value: string} | Yes      | `{}`    | Included on every event sent to Quantum Metric under Event Details as a list of objects with `name` and `value`. |
 
 ### Example Configuration
 
@@ -92,9 +92,9 @@ Where the event mappings IDs are the Quantum Metric event IDs you wish to send.
 ### Event Transformers
 
 The plugin comes with default Event Transformers for each predefined [Backstage key
-event](https://backstage.io/docs/plugins/analytics/#key-events) as described in [Default Transformers](#default-transformers). However, you can customize or extend these
-transformers. To override a default transformer or add transformers for new actions, modify the Analytics API
-configuration as follows:
+event](https://backstage.io/docs/plugins/analytics/#key-events) as described in
+[Default Transformers](#default-transformers). However, you can customize or extend these transformers. To override a
+default transformer or add transformers for new actions, modify the Analytics API configuration as follows:
 
 ```JS
   createApiFactory({
@@ -296,47 +296,6 @@ maintainers but also improves the overall transparency and readability of our pr
 
 For more detailed contributions guidelines, check our [CONTRIBUTING.md](./CONTRIBUTING.md) file.
 
-### Semantic Commit Messages
-
-In this project, we enforce the use of semantic commit messages to streamline our release and changelog generation
-process. This ensures our commit history is readable and understandable.
-
-#### What are Semantic Commit Messages?
-
-Semantic commit messages follow a structured format to clearly describe the purpose and intent of each commit. The
-general format is:
-
-- `<type>`: This denotes the kind of change you're making. Common types include `feat` (new features), `fix` (bug
-  fixes), `docs` (documentation changes), `style` (code styling, no functional changes), `refactor` (code changes that
-  neither fix bugs nor add features), `perf` (performance improvements), `test` (adding missing tests), and `chore`
-  (maintenance tasks).
-
-- `<scope>`: A scope provides additional contextual information, such as the part of the codebase affected (optional).
-
-- `<description>`: A brief, imperative mood description of the change.
-
-Examples:
-
-- `feat(auth): implement JWT authentication`
-- `fix(server): resolve memory leak issue`
-- `docs(readme): update installation instructions`
-
-### Enforcing Semantic Commits
-
-This project uses the [`amannn/action-semantic-pull-request`](https://github.com/amannn/action-semantic-pull-request)
-GitHub Action to ensure all pull requests follow the semantic commit format. The action checks your pull request titles,
-not the individual commit messages. Make sure your PR titles follow the semantic format.
-
-If your pull request title does not meet the semantic requirements, the check will fail, and you'll need to update the
-title accordingly. You can also add multiple types if your pull request covers more than one scope, separated by commas
-(e.g., `feat, fix: implement new feature and fix a bug`).
-
-## Contributing
-
-Before submitting your pull request, ensure your title follows the semantic commit format. This not only helps our maintainers but also improves the overall transparency and readability of our project history.
-
-For more detailed contributions guidelines, check our [CONTRIBUTING.md](./CONTRIBUTING.md) file.
-
 ### Local Development
 
 1. Install dependencies:
@@ -362,13 +321,18 @@ changes will not take effect till the next `backstage-cli package start`
 
 ### Semantic Commit Messages
 
-In this project, we enforce the use of semantic commit messages to streamline our release and changelog generation process. This ensures our commit history is readable and understandable.
+In this project, we enforce the use of semantic commit messages to streamline our release and changelog generation
+process. This ensures our commit history is readable and understandable.
 
 #### What are Semantic Commit Messages?
 
-Semantic commit messages follow a structured format to clearly describe the purpose and intent of each commit. The general format is:
+Semantic commit messages follow a structured format to clearly describe the purpose and intent of each commit. The
+general format is:
 
-- `<type>`: This denotes the kind of change you're making. Common types include `feat` (new features), `fix` (bug fixes), `docs` (documentation changes), `style` (code styling, no functional changes), `refactor` (code changes that neither fix bugs nor add features), `perf` (performance improvements), `test` (adding missing tests), and `chore` (maintenance tasks).
+- `<type>`: This denotes the kind of change you're making. Common types include `feat` (new features), `fix` (bug
+  fixes), `docs` (documentation changes), `style` (code styling, no functional changes), `refactor` (code changes that
+  neither fix bugs nor add features), `perf` (performance improvements), `test` (adding missing tests), and `chore`
+  (maintenance tasks).
 
 - `<scope>`: A scope provides additional contextual information, such as the part of the codebase affected (optional).
 
@@ -382,15 +346,22 @@ Examples:
 
 ### Enforcing Semantic Commits
 
-This project uses the [`amannn/action-semantic-pull-request`](https://github.com/amannn/action-semantic-pull-request) GitHub Action to ensure all pull requests follow the semantic commit format. The action checks your pull request titles, not the individual commit messages. Make sure your PR titles follow the semantic format.
+This project uses the [`amannn/action-semantic-pull-request`](https://github.com/amannn/action-semantic-pull-request)
+GitHub Action to ensure all pull requests follow the semantic commit format. The action checks your pull request titles,
+not the individual commit messages. Make sure your PR titles follow the semantic format.
 
-If your pull request title does not meet the semantic requirements, the check will fail, and you'll need to update the title accordingly. You can also add multiple types if your pull request covers more than one scope, separated by commas (e.g., `feat, fix: implement new feature and fix a bug`).
+If your pull request title does not meet the semantic requirements, the check will fail, and you'll need to update the
+title accordingly. You can also add multiple types if your pull request covers more than one scope, separated by commas
+(e.g., `feat, fix: implement new feature and fix a bug`).
 
 ### Semantic Versioning
 
-This project uses the [`release-it](https://github.com/release-it/release-it) nodeJS utility to increment software version numbers, automatically create GitHub tags and Releases and auto-publish to`npm`.
+This project uses the [`release-it`](https://github.com/release-it/release-it) nodeJS utility to increment software
+version numbers, automatically create GitHub tags and Releases and auto-publish to `npm`.
 
-Semantic versioning works by interpreting your semantic commit as described in the previous section and assigning it a classification based on the level of severity of the work. That classification then translates into a version number that follows the sequence: `Major.Minor.Patch`.
+Semantic versioning works by interpreting your semantic commit as described in the previous section and assigning it a
+classification based on the level of severity of the work. That classification then translates into a version number
+that follows the sequence: `Major.Minor.Patch`.
 
 When a major, minor, or patch update is made, the corresponding number is increased.
 
