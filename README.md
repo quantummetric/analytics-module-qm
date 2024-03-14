@@ -56,10 +56,30 @@ Examples:
 
 - `feat(auth): implement JWT authentication`
 - `fix(server): resolve memory leak issue`
-- `docs(readme): update installation instructions`
+- `chore(readme): update installation instructions`
 
 ### Enforcing Semantic Commits
 
 This project uses the [`amannn/action-semantic-pull-request`](https://github.com/amannn/action-semantic-pull-request) GitHub Action to ensure all pull requests follow the semantic commit format. The action checks your pull request titles, not the individual commit messages. Make sure your PR titles follow the semantic format.
 
 If your pull request title does not meet the semantic requirements, the check will fail, and you'll need to update the title accordingly. You can also add multiple types if your pull request covers more than one scope, separated by commas (e.g., `feat, fix: implement new feature and fix a bug`).
+
+### Semantic Versioning
+
+This project uses the [`release-it](https://github.com/release-it/release-it) nodeJS utility to increment software version numbers, automatically create GitHub tags and Releases and auto-publish to`npm`.
+
+Semantic versioning works by interpreting your semantic commit as described in the previous section and assigning it a classification based on the level of severity of the work. That classification then translates into a version number that follows the sequence: `Major.Minor.Patch`.
+
+When a major, minor, or patch update is made, the corresponding number is increased.
+
+- Major version changes are related to incompatible API changes.
+- Minor version changes are related to adding new functionality in a backward-compatible manner.
+- Patch version changes are related to bug fixes which are also backward compatible.
+
+The table below describes the relationship between the semantic commit message and the semantic version sequence:
+
+| Commit Message                                    | Inferred Type      | Example Sequence Update |
+|---------------------------------------------------|--------------------|-------------------------|
+| `feat(auth): implement JWT authentication`        | Major              | Yes                     |
+| `fix(server): resolve memory leak issue`          | Minor              | Yes                     |
+| `chore(readme): update installation instructions` | Patch              | No                      |
