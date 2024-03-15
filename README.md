@@ -5,7 +5,7 @@
 Welcome to the Quantum Metric Analytics Plugin for Backstage! This plugin aims to provide a quick and robust means to
 integrate Quantum Metric analytics with your Backstage instance.
 
-![Search Terms Card](./images/search-terms.png)
+![Search Terms Card](./images/platform.png)
 
 ## Installation
 
@@ -254,10 +254,10 @@ Alternatively, the default event transformer can be extended to capture more att
       QuantumMetric.fromConfig(configApi, {
         eventTransforms: {
           'catalog-updated': (event, mapping) => {
-            return { 
+            return {
                 eventId: mapping[event.action],
-                eventValue: event.subject, 
-                attributes: { ...event.attributes, ...event.context, numberOfAffectedEntities: event.value } 
+                eventValue: event.subject,
+                attributes: { ...event.attributes, ...event.context, numberOfAffectedEntities: event.value }
             };
           },
         },
