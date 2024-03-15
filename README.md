@@ -357,9 +357,6 @@ title accordingly. You can also add multiple types if your pull request covers m
 
 ### Semantic Versioning
 
-This project uses the [`release-it`](https://github.com/release-it/release-it) nodeJS utility to increment software
-version numbers, automatically create GitHub tags and Releases and auto-publish to `npm`.
-
 Semantic versioning works by interpreting your semantic commit as described in the previous section and assigning it a
 classification based on the level of severity of the work. That classification then translates into a version number
 that follows the sequence: `Major.Minor.Patch`.

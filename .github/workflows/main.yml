@@ -40,6 +40,11 @@ jobs:
   release:
     runs-on: ubuntu-latest
     needs: [build]
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+      id-token: write
     if: github.ref == 'refs/heads/main'
     strategy:
       matrix:
@@ -60,7 +65,4 @@ jobs:
       - run: npm config set //registry.npmjs.org/:_authToken $NPM_TOKEN
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-      - run: yarn run release --ci
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - run: npx semantic-release
