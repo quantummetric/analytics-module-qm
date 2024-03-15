@@ -15,6 +15,9 @@
   "npm": {
     "publish": false
   },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org"
+  },
   "github": {
     "release": true,
     "tokenRef": "GITHUB_TOKEN"
