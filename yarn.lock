@@ -4367,9 +4367,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@qm/plugin-analytics-module-qm@workspace:.":
+"@quantum-metric/plugin-analytics-module-qm@workspace:.":
   version: 0.0.0-use.local
-  resolution: "@qm/plugin-analytics-module-qm@workspace:."
+  resolution: "@quantum-metric/plugin-analytics-module-qm@workspace:."
   dependencies:
     "@backstage/cli": "npm:^0.22.6"
     "@backstage/config": "npm:^1.1.1"
