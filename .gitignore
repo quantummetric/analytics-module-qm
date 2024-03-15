@@ -8,3 +8,6 @@ dist-types
 # Yarn
 .yarn
 .yarnrc.yml
+
+# NPM
+.npmrc
