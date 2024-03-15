@@ -58,6 +58,8 @@ jobs:
           git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
       - run: yarn install
       - run: npm config set //registry.npmjs.org/:_authToken $NPM_TOKEN
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
       - run: yarn run release --ci
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
