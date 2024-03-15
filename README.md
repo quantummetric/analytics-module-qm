@@ -1,19 +1,19 @@
+# Analytics Module: Quantum Metric
 
 ![Quantum Metric Logo](./images/logo.png)
-# Analytics Module: Quantum Metric
 
 Welcome to the Quantum Metric Analytics Plugin for Backstage! This plugin aims to provide a quick and robust means to
 integrate Quantum Metric analytics with your Backstage instance.
 
 ## Installation
 
-1. Install the plugin:
+### Install the plugin
 
 ```bash
 yarn --cwd packages/app add @qm/plugin-analytics-module-qm
 ```
 
-2. Open the `packages/app/src/apis.ts` file and import the required dependencies::
+### Open the `packages/app/src/apis.ts` file and import the required dependencies
 
 ```JS
 import {
@@ -25,7 +25,7 @@ import { QuantumMetric } from '@qm/plugin-analytics-module-qm';
 
 ```
 
-3. Next, add the following code to `packages/app/src/apis.ts` to create the Quantum Metric Analytics API:
+### Next, add the following code to `packages/app/src/apis.ts` to create the Quantum Metric Analytics API
 
 ```JS
   createApiFactory({
@@ -120,7 +120,6 @@ attribute.
 There is a transformer for every [Backstage key
 event](https://backstage.io/docs/plugins/analytics/#key-events), and a default transformer when an action is not found
 in the `eventTransforms` record. The definitions can be found in [src/api/util/transforms.ts](./src/api/util/transforms.ts).
-
 
 | Backstage Analytics Action | Quantum Metric Event ID                    | Quantum Metric Event Value                                   | Quantum Metric Event Attributes                                                            | Quantum Metric Event Conversion |
 | -------------------------- | ------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------------------------------------ | ------------------------------- |
@@ -298,19 +297,19 @@ For more detailed contributions guidelines, check our [CONTRIBUTING.md](./CONTRI
 
 ### Local Development
 
-1. Install dependencies:
+#### Install dependencies
 
 ```bash
 yarn install
 ```
 
-2. Build dist folder:
+#### Build dist folder
 
 ```bash
 yarn build
 ```
 
-3. From your Backstage directory run the following where `$INSTALL_PATH` is the path of this repo:
+#### From your Backstage directory run the following where `$INSTALL_PATH` is the path of this repo
 
 ```bash
 yarn add @qm/plugin-analytics-module-qm@link:$INSTALL_PATH
@@ -373,6 +372,6 @@ The table below describes the relationship between the semantic commit message a
 
 | Commit Message                                    | Inferred Type | Example Sequence Update |
 | ------------------------------------------------- | ------------- | ----------------------- |
-| `feat(auth): implement JWT authentication`        | Major         | Yes                     |
-| `fix(server): resolve memory leak issue`          | Minor         | Yes                     |
-| `chore(readme): update installation instructions` | Patch         | No                      |
+| `feat(auth): implement JWT authentication`        | Major         | 1.0.0                   |
+| `fix(server): resolve memory leak issue`          | Minor         | 0.1.0                   |
+| `chore(readme): update installation instructions` | Patch         | 0.0.1                   |
