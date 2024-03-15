@@ -5,7 +5,8 @@ integrate Quantum Metric analytics with your Backstage instance.
 
 ![QM Platform](./images/platform.png)
 
-### **This plugin requires an account with [Quantum Metric](https://www.quantummetric.com/)**
+## **This plugin requires an account with [Quantum Metric](https://www.quantummetric.com/)**
+
 ## Installation
 
 ### Install the plugin
