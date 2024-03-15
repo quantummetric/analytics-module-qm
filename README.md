@@ -12,7 +12,7 @@ integrate Quantum Metric analytics with your Backstage instance.
 ### Install the plugin
 
 ```bash
-yarn --cwd packages/app add @qm/plugin-analytics-module-qm
+yarn --cwd packages/app add @quantum-metric/plugin-analytics-module-qm
 ```
 
 ### Open the `packages/app/src/apis.ts` file and import the required dependencies
@@ -23,7 +23,7 @@ import {
   configApiRef,
   identityApiRef,
 } from '@backstage/core-plugin-api';
-import { QuantumMetric } from '@qm/plugin-analytics-module-qm';
+import { QuantumMetric } from '@quantum-metric/plugin-analytics-module-qm';
 
 ```
 
@@ -314,7 +314,7 @@ yarn build
 #### From your Backstage directory run the following where `$INSTALL_PATH` is the path of this repo
 
 ```bash
-yarn add @qm/plugin-analytics-module-qm@link:$INSTALL_PATH
+yarn add @quantum-metric/plugin-analytics-module-qm@link:$INSTALL_PATH
 ```
 
 Note: If making changes to `config.d.ts` against a Backstage instance started with `backstage-cli package start`,
