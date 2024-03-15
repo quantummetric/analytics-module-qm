@@ -79,7 +79,6 @@ const defaultConfig = {
   },
 };
 
-
 beforeEach(() => {
   mockQuantumMetricAPI = {
     identifyUser: jest.fn(),
