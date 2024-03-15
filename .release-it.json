@@ -13,11 +13,7 @@
     "requireCleanWorkingDir": false
   },
   "npm": {
-    "publish": true,
-    "skipChecks": true
-  },
-  "publishConfig": {
-    "registry": "https://registry.npmjs.org"
+    "publish": true
   },
   "github": {
     "release": true,
