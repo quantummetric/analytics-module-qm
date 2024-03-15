@@ -1,11 +1,11 @@
 # Analytics Module: Quantum Metric
 
-
-
 Welcome to the Quantum Metric Analytics Plugin for Backstage! This plugin aims to provide a quick and robust means to
 integrate Quantum Metric analytics with your Backstage instance.
 
 ![QM Platform](./images/platform.png)
+
+## **This plugin requires an account with [Quantum Metric](https://www.quantummetric.com/)**
 
 ### **This plugin requires an account with [Quantum Metric](https://www.quantummetric.com/)**
 ## Installation
@@ -377,4 +377,4 @@ The table below describes the relationship between the semantic commit message a
 | ------------------------------------------------- | ------------- | ----------------------- |
 | `feat(auth): implement JWT authentication`        | Major         | 1.0.0                   |
 | `fix(server): resolve memory leak issue`          | Minor         | 0.1.0                   |
-| `chore(readme): update installation instructions` | Patch         | 0.0.1                   |
+| `docs(readme): update installation instructions`  | Patch         | 0.0.1                   |
