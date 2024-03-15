@@ -374,6 +374,6 @@ The table below describes the relationship between the semantic commit message a
 
 | Commit Message                                    | Inferred Type | Example Sequence Update |
 | ------------------------------------------------- | ------------- | ----------------------- |
-| `feat(auth): implement JWT authentication`        | Major         | Yes                     |
-| `fix(server): resolve memory leak issue`          | Minor         | Yes                     |
-| `docs(readme): update installation instructions` | Patch         | No                      |
+| `feat(auth): implement JWT authentication`        | Major         | 1.0.0                   |
+| `fix(server): resolve memory leak issue`          | Minor         | 0.1.0                   |
+| `docs(readme): update installation instructions`  | Patch         | 0.0.1                   |
