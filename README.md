@@ -5,8 +5,9 @@
 Welcome to the Quantum Metric Analytics Plugin for Backstage! This plugin aims to provide a quick and robust means to
 integrate Quantum Metric analytics with your Backstage instance.
 
-![Search Terms Card](./images/platform.png)
+![QM Platform](./images/platform.png)
 
+### **This plugin requires an account with [Quantum Metric](https://www.quantummetric.com/)**
 ## Installation
 
 ### Install the plugin
