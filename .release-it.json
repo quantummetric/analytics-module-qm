@@ -1,16 +1,8 @@
 {
   "plugins": {
     "@release-it/conventional-changelog": {
-      "preset": "angular",
-      "infile": "CHANGELOG.md"
+      "preset": "angular"
     }
-  },
-  "hooks": {
-    "after:bump": "npx auto-changelog -p"
-  },
-  "git": {
-    "changelog": "npx auto-changelog --stdout --commit-limit false --unreleased --template https://raw.githubusercontent.com/release-it/release-it/main/templates/changelog-compact.hbs",    
-    "requireCleanWorkingDir": false
   },
   "npm": {
     "publish": true,
