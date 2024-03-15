@@ -6,12 +6,13 @@
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/quantummetric/analytics-module-qm"
+    "url": "git+https://github.com/quantummetric/analytics-module-qm.git"
   },
   "publishConfig": {
     "access": "public",
     "main": "dist/index.esm.js",
-    "types": "dist/index.d.ts"
+    "types": "dist/index.d.ts",
+    "registry": "https://registry.npmjs.org"
   },
   "backstage": {
     "role": "frontend-plugin"
