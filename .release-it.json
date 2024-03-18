@@ -13,7 +13,7 @@
     "requireCleanWorkingDir": false
   },
   "npm": {
-    "publish": true,
+    "publish": false,
     "skipChecks": true
   },
   "publishConfig": {
