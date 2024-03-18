@@ -28,7 +28,7 @@
     "prepack": "backstage-cli package prepack",
     "prettier:check": "prettier --check .",
     "postpack": "backstage-cli package postpack",
-    "release": "semantic-release",
+    "release": "release-it --ci",
     "dev": "nodemon -e js,ts --exitcrash --ignore dist --exec \"yarn run build && cp config.d.ts dist/\""
   },
   "dependencies": {
@@ -51,6 +51,7 @@
     "@backstage/core-app-api": "^1.9.1",
     "@backstage/dev-utils": "^1.0.19",
     "@backstage/test-utils": "^1.4.2",
+    "@release-it/conventional-changelog": "^8.0.1",
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/git": "^10.0.1",
     "@semantic-release/github": "^9.2.6",
@@ -58,7 +59,7 @@
     "@testing-library/react": "^12.1.3",
     "@testing-library/user-event": "^14.0.0",
     "msw": "^1.0.0",
-    "semantic-release": "^23.0.2"
+    "release-it": "^17.1.1"
   },
   "files": [
     "dist",
