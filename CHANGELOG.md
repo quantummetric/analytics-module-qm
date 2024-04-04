@@ -1,3 +1,10 @@
+## [1.0.2](https://github.com/quantummetric/analytics-module-qm/compare/v1.0.1...v1.0.2) (2024-04-04)
+
+
+### Bug Fixes
+
+* update release to run build ([2d6e5d2](https://github.com/quantummetric/analytics-module-qm/commit/2d6e5d24cee8768e53f24b06319e19fa4e0d3742))
+
 ## [1.0.1](https://github.com/quantummetric/analytics-module-qm/compare/v1.0.0...v1.0.1) (2024-03-18)
 
 # 1.0.0 (2024-03-18)
